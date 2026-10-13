@@ -77,5 +77,15 @@ Only datasets that are actually comparable should be merged. For example, a diff
 
 ## Publishing
 
-Nothing has been pushed. When approved, the plan is a repository whose Pages source is `main` / `docs/`.
-Raw ACS/HPD downloads, `.Rproj` files and assignment documents are **not** part of this folder and will not be published.
+- **Live site:** https://levilebel.github.io/nyc-rent-burden-atlas/
+- **Repository:** https://github.com/levilebel/nyc-rent-burden-atlas (GitHub Pages: branch `main`, folder `/docs`)
+
+Every push to `main` redeploys the site automatically, usually within a minute.
+Raw ACS/HPD downloads, `.Rproj` files, assignment documents and `pipeline/config.local.R` are **not** in the repository (see `.gitignore`).
+
+### Update workflow
+1. Add or change the analysis (see "Adding a new assignment" above).
+2. `Rscript pipeline/build_data.R`, then `Rscript pipeline/verify_outputs.R` (must report 0 FAIL).
+3. Preview locally (`tools/serve.ps1`) and check both themes.
+4. Record the change in `CHANGELOG.md`.
+5. Commit and `git push`. The Pages deployment then runs on its own.

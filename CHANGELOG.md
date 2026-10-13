@@ -2,7 +2,10 @@
 
 All changes to the published data and analyses are recorded here. Earlier analyses are kept, not overwritten.
 
-## 2026-10-12 — v0.3.0 external-review improvements (not published)
+## 2026-10-12 — published
+- Published to GitHub Pages: https://levilebel.github.io/nyc-rent-burden-atlas/ (repository `levilebel/nyc-rent-burden-atlas`, branch `main`, folder `/docs`). Before publishing: 60/60 verification checks passed and the staged files were scanned for credentials and personal data. Commits use the GitHub no-reply address.
+
+## 2026-10-12 — v0.3.0 external-review improvements
 
 **HW4 baseline unchanged.** `borough_summary.json`, `statistics.json` and `hpd_by_year.json` are byte-identical to v0.2.1. Every HW4 field in `zip_data.json` is unchanged. The HW4 pressure index, its formula, the study population (179/185 ZCTAs) and the "$250,000+" handling are all preserved.
 
