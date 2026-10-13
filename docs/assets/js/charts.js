@@ -282,3 +282,41 @@ export function stackedColumns(el, { rows, series, width, yTitle, ariaLabel, tip
     bindTip(hit, tip);
   });
 }
+
+// d3-geo expects clockwise exterior rings; RFC 7946 files are counter-clockwise.
+// Flips any ring set whose area exceeds a hemisphere. Idempotent, so safe to call more than once.
+export function rewindFC(fc) {
+  fc.features.forEach((f) => {
+    const g = f.geometry;
+    (g.type === "Polygon" ? [g.coordinates] : g.coordinates).forEach((rings) => {
+      if (d3.geoArea({ type: "Polygon", coordinates: [rings[0]] }) > 2 * Math.PI) rings.forEach((r) => r.reverse());
+    });
+  });
+  return fc;
+}
+
+/**
+ * Small-multiple ZCTA choropleth (same visual style as the ZIP explorer map).
+ * features: GeoJSON features with properties.zip; fill(zip) -> colour or null (null = hatched "no data");
+ * tip(zip) -> tooltip HTML; ring(zip) -> true to outline a ZIP (e.g. ZIPs receiving a scenario increase).
+ */
+export function choropleth(el, { features, outlines, width, fill, tip, ring, ariaLabel }) {
+  const h = Math.round(width * 1.0);
+  d3.select(el).selectAll("*").remove();
+  const svg = d3.select(el).append("svg").attr("viewBox", `0 0 ${width} ${h}`).attr("role", "img").attr("aria-label", ariaLabel);
+  const pid = `${el.id || "map"}-hatch`;
+  svg.append("defs").append("pattern").attr("id", pid).attr("patternUnits", "userSpaceOnUse").attr("width", 5).attr("height", 5).attr("patternTransform", "rotate(45)")
+    .call((p) => { p.append("rect").attr("width", 5).attr("height", 5).attr("fill", COLORS.hatchA); p.append("line").attr("y2", 5).attr("stroke", COLORS.hatchB).attr("stroke-width", 2); });
+  const proj = d3.geoMercator().fitExtent([[6, 6], [width - 6, h - 6]], { type: "FeatureCollection", features });
+  const path = d3.geoPath(proj);
+  const paths = svg.append("g").selectAll("path").data(features).join("path")
+    .attr("class", "zcta").attr("d", path)
+    .attr("fill", (f) => fill(f.properties.zip) ?? `url(#${pid})`)
+    .attr("aria-label", (f) => `ZIP ${f.properties.zip}`);
+  if (tip) bindTip(paths, (f) => tip(f.properties.zip));
+  if (outlines) svg.append("g").selectAll("path").data(outlines.features).join("path").attr("class", "boro-outline").attr("d", path);
+  if (ring) {
+    svg.append("g").selectAll("path").data(features.filter((f) => ring(f.properties.zip))).join("path")
+      .attr("class", "zcta-ring").attr("d", path);
+  }
+}

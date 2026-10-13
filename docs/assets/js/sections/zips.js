@@ -35,6 +35,9 @@ export function init(ctx) {
   const search = document.getElementById("zip-search");
   metricSel.innerHTML = MAP_METRICS.map((k) => `<option value="${k}">${METRICS[k].label}</option>`).join("");
   boroSel.insertAdjacentHTML("beforeend", BOROUGHS.map((b) => `<option>${b}</option>`).join(""));
+  // The income scatter lives in its own section with its own borough filter.
+  const incomeSel = document.getElementById("income-borough");
+  incomeSel.insertAdjacentHTML("beforeend", BOROUGHS.map((b) => `<option>${b}</option>`).join(""));
   document.getElementById("zip-list").innerHTML = zipData.map((z) => `<option value="${z.zip}">${z.zip} · ${z.borough}</option>`).join("");
 
   const valueOf = (z, key) => {
@@ -217,7 +220,7 @@ export function init(ctx) {
   const scEl = document.getElementById("income-scatter");
   const assoc = Object.fromEntries(stats.income_vs_burden.map((a) => [a.group, a]));
   function drawScatter(width) {
-    const boro = boroSel.value;
+    const boro = incomeSel.value;
     const grp = boro === "all" ? "New York City" : boro;
     const a = assoc[grp];
     const { selected } = store.get();
@@ -293,7 +296,8 @@ export function init(ctx) {
     if (/^\d{5}$/.test(zp) && zipIndex.has(zp)) { store.select(zp); search.value = ""; }
   });
   metricSel.addEventListener("change", drawMap);
-  boroSel.addEventListener("change", () => { drawMap(); drawScatter(scEl.clientWidth); drawTable(); });
+  boroSel.addEventListener("change", () => { drawMap(); drawTable(); });
+  incomeSel.addEventListener("change", () => drawScatter(scEl.clientWidth));
 
   onResize(mapEl, drawMap);
   onResize(cmpEl, drawCompare);
