@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <script>
+    // Resolve the theme before first paint (no flash): saved choice, else OS preference.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem("atlas-theme"); } catch (e) {}
+      var sys = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      var t = saved === "light" || saved === "dark" ? saved : sys;
+      document.documentElement.setAttribute("data-theme", t);
+      document.documentElement.setAttribute("data-theme-source", saved ? "user" : "system");
+    })();
+  </script>
+  <title>About · NYC Rent Burden Atlas</title>
+  <meta name="description" content="About the NYC Rent Burden Atlas: the creator, research question, data sources and how the project developed from university coursework.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b2545'/%3E%3Crect x='7' y='14' width='4' height='11' fill='%238db3e2'/%3E%3Crect x='14' y='9' width='4' height='16' fill='%23cde2fb'/%3E%3Crect x='21' y='17' width='4' height='8' fill='%235598e7'/%3E%3C/svg%3E">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html" aria-label="NYC Rent Burden Atlas — home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">NYC Rent Burden <em>Atlas</em></span>
+      </a>
+      <nav id="site-nav" class="site-nav" aria-label="Sections">
+        <a href="index.html#overview">Home</a>
+        <a href="index.html#boroughs">Rent Burden</a>
+        <a href="index.html#income">Income</a>
+        <a href="index.html#housing">Affordable Housing</a>
+        <a href="index.html#pressure">Affordability Pressure</a>
+        <a href="index.html#simulator">Policy Simulator</a>
+        <a href="about.html" class="active" aria-current="page">About</a>
+      </nav>
+      <button class="header-btn nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <button class="header-btn theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero about-hero">
+      <div class="wrap">
+        <p class="eyebrow">About the project</p>
+        <h1>Data on housing affordability, built to support better decisions</h1>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap about-body">
+        <p class="about-intro">My name is Levi Lebel, and I created this project to examine how rent burden, household income, and affordable housing activity vary across New York City.</p>
+
+        <h2>Why this project</h2>
+        <p>Housing costs shape where people can live, how much they can save, and how much financial security they have.
+          A citywide average can hide large differences between neighborhoods. I wanted to see those differences at the ZIP-code level,
+          and to set them next to the record of the City's affordable housing activity, so that patterns of need and patterns of investment can be examined side by side.</p>
+        <div class="kpis small about-facts" id="about-facts" aria-live="polite"></div>
+        <p class="source" id="about-facts-source"></p>
+
+        <h2>Research question</h2>
+        <p class="about-question">How do rent burden, household income and affordable housing activity vary across New York City's boroughs and ZIP codes,
+          and where does high rent burden coincide with low affordable housing activity?</p>
+
+        <h2>Data</h2>
+        <ul>
+          <li><strong>U.S. Census Bureau, American Community Survey (ACS) 2024 five-year estimates</strong> (survey years 2020–2024):
+            Table B25070, gross rent as a share of household income (rent burden), and Table B19013, median household income, at the ZIP Code Tabulation Area level.</li>
+          <li><strong>NYC Department of Housing Preservation and Development (HPD), Affordable Housing Production by Building</strong> (NYC Open Data):
+            affordable units counted in projects started from 2014 to mid-2026, covering new construction and preservation.</li>
+          <li><strong>Census 2020 ZCTA boundaries</strong> for the maps.</li>
+        </ul>
+        <p>Every figure on the site is produced by a reproducible R pipeline and checked against the original data by an independent verification script.
+          See the <a href="index.html#methods">methodology</a> and the full list of sources in the <a href="https://github.com/levilebel/nyc-rent-burden-atlas/blob/main/DATA_SOURCES.md" rel="noopener">repository</a>.</p>
+
+        <h2>From coursework to portfolio project</h2>
+        <p>The project began as university coursework in statistics: first a Brooklyn analysis, then a citywide analysis of all five boroughs.
+          It has since developed into a broader portfolio project focused on data analysis, public policy and housing affordability.
+          It now includes an interactive dashboard, documented statistical uncertainty, a validation pipeline and a scenario-based policy simulator.
+          The <a href="index.html#research">research log</a> records how each stage was added.</p>
+
+        <h2>Analytical interests</h2>
+        <ul class="about-interests">
+          <li><strong>Business analytics</strong><br>Turning raw data into clear, decision-relevant metrics.</li>
+          <li><strong>Data visualization</strong><br>Designing charts and maps that are accurate, accessible and easy to read.</li>
+          <li><strong>Policy analysis</strong><br>Connecting evidence to real public policy questions, with careful attention to what the data can and cannot show.</li>
+          <li><strong>Data-driven decision-making</strong><br>Using transparent, reproducible analysis to support better decisions.</li>
+        </ul>
+
+        <h2>Explore</h2>
+        <p><a href="index.html#overview">Start with the overview</a>, try the <a href="index.html#simulator">policy simulator</a>,
+          or browse the <a href="https://github.com/levilebel/nyc-rent-burden-atlas" rel="noopener">source code on GitHub</a>.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p><strong>NYC Rent Burden Atlas</strong> · Research by Levi Lebel.</p>
+      <nav class="footer-links" aria-label="More">
+        <a href="index.html#methods">Methodology</a> · <a href="index.html#research">Research log</a> · <a href="index.html#policy">Policy context</a> ·
+        <a href="https://github.com/levilebel/nyc-rent-burden-atlas" rel="noopener">Source code on GitHub</a>
+      </nav>
+      <p>Data: U.S. Census Bureau ACS 2024 5-Year Estimates (B25070, B19013); NYC HPD Affordable Housing Production by Building; Census 2020 ZCTA cartographic boundaries.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="assets/js/about.js"></script>
+</body>
+</html>

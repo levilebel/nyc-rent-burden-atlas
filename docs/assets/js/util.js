@@ -47,6 +47,8 @@ const THEMES = {
       b30: "#86b6ef", b35: "#5598e7", b40: "#256abf", b50: "#0d366b",
       nc: "#184f95", pres: "#86b6ef",
       bands: ["#0d366b", "#184f95", "#256abf", "#5598e7", "#86b6ef", "#98a3b3"],
+      // diverging for the simulation change map: blue = pressure falls, neutral grey = no change, orange = rises
+      divNeg: ["#0d366b", "#256abf", "#86b6ef"], divZero: "#e4e2dd", divPos: ["#f4c2a1", "#e0814f", "#b4501f"],
     },
   },
   dark: {
@@ -57,6 +59,7 @@ const THEMES = {
       b30: "#1f5fb0", b35: "#3f86e0", b40: "#78aef0", b50: "#cfe3fb",
       nc: "#9ec5f4", pres: "#2f6fc4",
       bands: ["#eef5fd", "#a9cbf5", "#6fa8ee", "#3f86e0", "#1f5fb0", "#6f7f97"],
+      divNeg: ["#cfe3fb", "#5598e7", "#1f5fb0"], divZero: "#33415a", divPos: ["#7a4528", "#c76a3a", "#f0a77c"],
     },
   },
 };

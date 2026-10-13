@@ -33,12 +33,13 @@
         <span class="brand-text">NYC Rent Burden <em>Atlas</em></span>
       </a>
       <nav id="site-nav" class="site-nav" aria-label="Sections">
-        <a href="#overview">Overview</a>
-        <a href="#boroughs">Boroughs</a>
-        <a href="#zips">ZIP explorer</a>
-        <a href="#housing">Affordable housing</a>
-        <a href="#methods">Methodology</a>
-        <a href="#research">Research log</a>
+        <a href="#overview">Home</a>
+        <a href="#boroughs" data-sections="boroughs zips">Rent Burden</a>
+        <a href="#income">Income</a>
+        <a href="#housing">Affordable Housing</a>
+        <a href="#pressure">Affordability Pressure</a>
+        <a href="#simulator" data-sections="simulator policy">Policy Simulator</a>
+        <a href="about.html">About</a>
       </nav>
       <button class="header-btn nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <button class="header-btn theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
@@ -111,7 +112,7 @@
     <section id="boroughs" class="section">
       <div class="wrap">
         <div class="section-head">
-          <p class="eyebrow">Section B</p>
+          <p class="eyebrow">Rent burden</p>
           <h2>Borough comparison</h2>
           <p>Borough rates pool counts across ZCTAs (sum of burdened ÷ sum of renter households) — they are not averages of ZIP rates.
             Error bars show approximate 90% margins of error.</p>
@@ -166,7 +167,7 @@
     <section id="zips" class="section band">
       <div class="wrap">
         <div class="section-head">
-          <p class="eyebrow">Section C</p>
+          <p class="eyebrow">Rent burden · ZIP codes</p>
           <h2>ZIP code explorer</h2>
           <p>Map areas are Census ZIP Code Tabulation Areas (ZCTAs), which approximate but do not equal USPS ZIP codes.
             Select a ZIP on the map, in the search box, or in the table to add it to the comparison.</p>
@@ -205,6 +206,32 @@
           <div id="compare-chart" class="chart"></div>
         </div>
 
+        <div class="card">
+          <h3 class="card-title">All ZIP codes</h3>
+          <p class="card-sub">Click a column header to sort; click a row to compare.</p>
+          <div class="table-scroll tall"><table class="data-table" id="zip-table"></table></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= INCOME ======================= -->
+    <section id="income" class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Income</p>
+          <h2>Household income and rent burden</h2>
+          <p>How median household income relates to the share of rent-burdened renters, citywide and within each borough.
+            Both measures are ACS survey estimates for 2020–2024. Associations describe the data; they are not causal estimates.</p>
+        </div>
+
+        <div class="controls" role="group" aria-label="Income chart options">
+          <label>Borough
+            <select id="income-borough">
+              <option value="all">All boroughs</option>
+            </select>
+          </label>
+        </div>
+
         <div class="grid-2">
           <div class="card">
             <h3 class="card-title">Median household income vs. rent burden</h3>
@@ -213,19 +240,20 @@
             <p class="source">Source: ACS 2024 5-Year, Tables B19013 and B25070. Line: ordinary least squares fit for the selected group. Association only — not a causal estimate.</p>
           </div>
           <div class="card">
-            <h3 class="card-title">All ZIP codes</h3>
-            <p class="card-sub">Click a column header to sort; click a row to compare.</p>
-            <div class="table-scroll tall"><table class="data-table" id="zip-table"></table></div>
+            <h3 class="card-title">Strength of the association by borough</h3>
+            <p class="card-sub">Pearson correlation and OLS slope of rent burden on median household income across ZIP codes. Top-coded incomes ($250,000+) are excluded, as in HW4.</p>
+            <div class="table-scroll"><table class="data-table" id="income-assoc"></table></div>
+            <p class="source">Computed from the published ZIP data by <code>pipeline/build_data.R</code> (statistics.json). A negative r means higher-income ZIPs tend to have lower rent burden.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ======================= HOUSING ======================= -->
-    <section id="housing" class="section">
+    <section id="housing" class="section band">
       <div class="wrap">
         <div class="section-head">
-          <p class="eyebrow">Section D</p>
+          <p class="eyebrow">Affordable housing</p>
           <h2>Affordable housing production</h2>
           <p>HPD's production data records what the City financed or preserved — it is a <strong>flow of policy activity</strong>.
             Rent burden is a <strong>condition of households</strong> at a point in time. The two are measured on different populations and timelines,
@@ -261,30 +289,134 @@
           <p class="source" id="hpd-year-source"></p>
         </div>
 
+        <div class="card">
+          <h3 class="card-title">Production intensity vs. rent burden, by ZIP</h3>
+          <p class="card-sub" id="hpd-scatter-sub"></p>
+          <div class="controls compact">
+            <label>Borough
+              <select id="hpd-scatter-borough"><option value="all">All boroughs</option></select>
+            </label>
+          </div>
+          <div id="hpd-scatter" class="chart"></div>
+          <p class="source">Dashed lines: NYC medians across 179 ZCTAs (HW4). X-axis is square-root scaled. Sources: ACS B25070; NYC HPD.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= AFFORDABILITY PRESSURE ======================= -->
+    <section id="pressure" class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Affordability pressure</p>
+          <h2>Where high burden meets low housing activity</h2>
+          <p>The affordability pressure index from Homework 4 combines two ranks: how high a ZIP's rent burden is, and how little affordable housing activity HPD has recorded there.
+            It is a <strong>custom, relative research indicator</strong> — a ranking among NYC ZIP codes, not an official statistic and not a measure of cause and effect.
+            The <a href="#simulator">policy simulator</a> shows how this ranking responds to hypothetical increases in housing activity.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Rankings: HW4 baseline and exploratory alternative</h3>
+          <div class="tabs" role="tablist" aria-label="Ranking version">
+            <button role="tab" aria-selected="true" data-tab="pressure">HW4 baseline index</button>
+            <button role="tab" aria-selected="false" data-tab="alt">Alternative (exploratory)</button>
+            <button role="tab" aria-selected="false" data-tab="activity">Most HPD activity</button>
+          </div>
+          <div id="rank-chart" class="chart"></div>
+          <p class="source" id="rank-note"></p>
+          <div id="rank-changes"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= POLICY SIMULATOR ======================= -->
+    <section id="simulator" class="section band">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Policy simulator · what-if analysis</p>
+          <h2>What if affordable housing activity increased?</h2>
+          <p>The sections above are <em>descriptive</em>: they show where rent burden is high and where recorded affordable housing activity is low.
+            This tool adds a <em>prescriptive, scenario-based</em> view. Choose a hypothetical increase in affordable housing units per 1,000 renter households and the ZIP codes that receive it,
+            and see how the affordability pressure index would be recalculated.</p>
+        </div>
+
+        <p class="sim-banner" role="note"><strong>Simulation — not a causal forecast.</strong> Rent burden is held fixed at its 2020–2024 ACS estimate.
+          The tool shows how the HW4 index would re-rank ZIP codes under a hypothetical change in recorded activity. It does not predict rents, household burden, or the effect of any policy.</p>
+        <div id="sim-status"></div>
+
+        <div class="controls sim-controls" role="group" aria-label="Scenario settings">
+          <fieldset class="seg" id="sim-delta">
+            <legend>Hypothetical increase (units per 1,000 renter households)</legend>
+            <button type="button" data-delta="10" aria-pressed="false">+10</button>
+            <button type="button" data-delta="25" aria-pressed="true">+25</button>
+            <button type="button" data-delta="50" aria-pressed="false">+50</button>
+            <label class="seg-custom">Custom
+              <input id="sim-custom" type="number" min="0" max="500" step="1" inputmode="numeric" placeholder="0–500" aria-label="Custom increase, units per 1,000 renter households">
+            </label>
+          </fieldset>
+          <label>Apply the increase to
+            <select id="sim-target">
+              <option value="top10" selected>The 10 highest-pressure ZIPs (HW4)</option>
+              <option value="top25">The 25 highest-pressure ZIPs (HW4)</option>
+              <option value="zero">ZIPs with no recorded HPD units</option>
+              <option value="above_median">All ZIPs above the median pressure index</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="kpis small" id="sim-kpis" aria-live="polite"></div>
+        <p class="sim-narrative" id="sim-narrative" aria-live="polite"></p>
+
+        <div class="card">
+          <h3 class="card-title">Before vs. after</h3>
+          <p class="card-sub">Current pressure index, the index recalculated under the scenario, and the change. Outlined areas receive the hypothetical increase. Hover for details.</p>
+          <div class="map-trio">
+            <figure><figcaption>Current (HW4 index)</figcaption><div id="sim-map-before" class="map-sm"></div></figure>
+            <figure><figcaption>Scenario</figcaption><div id="sim-map-after" class="map-sm"></div></figure>
+            <figure><figcaption>Change</figcaption><div id="sim-map-change" class="map-sm"></div></figure>
+          </div>
+          <div class="sim-legends">
+            <div id="sim-legend-index" class="map-legend"></div>
+            <div id="sim-legend-change" class="map-legend"></div>
+          </div>
+          <p class="source">Hatched: no renter households with computed burden (not ranked). Excluded Manhattan ZCTAs 10162 and 10279 are not shown. Sources: ACS 2024 5-Year B25070; NYC HPD (export 2026-10-12).</p>
+        </div>
+
         <div class="grid-2">
           <div class="card">
-            <h3 class="card-title">Production intensity vs. rent burden, by ZIP</h3>
-            <p class="card-sub" id="hpd-scatter-sub"></p>
-            <div class="controls compact">
-              <label>Borough
-                <select id="hpd-scatter-borough"><option value="all">All boroughs</option></select>
-              </label>
-            </div>
-            <div id="hpd-scatter" class="chart"></div>
-            <p class="source">Dashed lines: NYC medians across 179 ZCTAs (HW4). X-axis is square-root scaled. Sources: ACS B25070; NYC HPD.</p>
+            <h3 class="card-title">Largest changes</h3>
+            <p class="card-sub">The five largest decreases, then the five largest increases among ZIPs that receive nothing. ⚠ marks small samples or Low reliability.</p>
+            <div id="sim-changes"></div>
           </div>
           <div class="card">
-            <h3 class="card-title">Rankings: HW4 baseline and exploratory alternative</h3>
-            <div class="tabs" role="tablist" aria-label="Ranking version">
-              <button role="tab" aria-selected="true" data-tab="pressure">HW4 baseline index</button>
-              <button role="tab" aria-selected="false" data-tab="alt">Alternative (exploratory)</button>
-              <button role="tab" aria-selected="false" data-tab="activity">Most HPD activity</button>
-            </div>
-            <div id="rank-chart" class="chart"></div>
-            <p class="source" id="rank-note"></p>
-            <div id="rank-changes"></div>
+            <h3 class="card-title">Top 10 before and after</h3>
+            <p class="card-sub">Highest pressure index, current vs. scenario.</p>
+            <div id="sim-top"></div>
           </div>
         </div>
+
+        <div class="card data-note sim-method">
+          <h3 class="card-title">How the simulation works and what it assumes</h3>
+          <ul>
+            <li><strong>Same formula as Homework 4.</strong> The index is recomputed in your browser from the published counts: rank of rent burden (high→low) plus rank of HPD units per 1,000 renter households (low→high), rescaled to 0–100. The page checks that its current values match the published HW4 index exactly.</li>
+            <li><strong>What changes:</strong> only the activity measure of the selected ZIPs, which increases by the chosen number of units per 1,000 renter households. The renter household denominator is the ACS 2020–2024 estimate.</li>
+            <li><strong>What does not change:</strong> rent burden, incomes, rents and renter households. The tool assumes no effect of new units on burden, because the data cannot tell us what that effect would be.</li>
+            <li><strong>The index is relative.</strong> Improving some ZIPs moves others up the ranking even though nothing changed there, and a uniform increase everywhere changes nothing. Use the change map to see this re-ranking.</li>
+            <li><strong>Scale.</strong> "Hypothetical additional units" multiplies the increase by each ZIP's estimated renter households ÷ 1,000. It is a size reference, not a cost or feasibility estimate. HPD counts both new construction and preservation.</li>
+            <li><strong>Uncertainty.</strong> ZIP rankings inherit sampling error from the ACS estimates. Small ZIPs (⚠) can move a lot for statistical reasons alone.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= POLICY CONTEXT ======================= -->
+    <section id="policy" class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Policy context</p>
+          <h2>Connecting the analysis to real policy</h2>
+          <p>Housing laws, programs and grants that relate to rent burden and affordable housing production. Entries appear here only after they have been checked against an official source;
+            until then each category shows a placeholder. Content is maintained in <code>docs/content/policy.json</code>.</p>
+        </div>
+        <div class="policy-grid" id="policy-content"></div>
       </div>
     </section>
 
@@ -292,7 +424,7 @@
     <section id="methods" class="section band">
       <div class="wrap narrow-ish">
         <div class="section-head">
-          <p class="eyebrow">Section E</p>
+          <p class="eyebrow">Methodology</p>
           <h2>Research &amp; methodology</h2>
         </div>
         <div id="methods-content"></div>
@@ -303,7 +435,7 @@
     <section id="research" class="section">
       <div class="wrap">
         <div class="section-head">
-          <p class="eyebrow">Section F</p>
+          <p class="eyebrow">Research log</p>
           <h2>Research log</h2>
           <p>Each assignment is integrated only after its files are inspected and its numbers reproduced. New modules are appended here — earlier analyses are kept, not overwritten.</p>
         </div>
@@ -315,6 +447,10 @@
   <footer class="site-footer">
     <div class="wrap">
       <p><strong>NYC Rent Burden Atlas</strong> · Research by Levi Lebel.</p>
+      <nav class="footer-links" aria-label="More">
+        <a href="about.html">About</a> · <a href="#zips">ZIP explorer</a> · <a href="#methods">Methodology</a> · <a href="#research">Research log</a> · <a href="#policy">Policy context</a> ·
+        <a href="https://github.com/levilebel/nyc-rent-burden-atlas" rel="noopener">Source code on GitHub</a>
+      </nav>
       <p id="build-info"></p>
       <p>Data: U.S. Census Bureau ACS 2024 5-Year Estimates (B25070, B19013); NYC HPD Affordable Housing Production by Building; Census 2020 ZCTA cartographic boundaries.</p>
     </div>

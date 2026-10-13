@@ -69,6 +69,13 @@ index = 100 × (max score − score) ÷ (max score − min score)</code>
       8 of its top 10 are also in the HW4 top 10. 11005 and 11697 drop out (small samples), and 11429 and 11416 enter. The ranking chart shows how each ZIP moves.
       It is a sensitivity view, not a corrected index, and it carries the same interpretation limits: different reference periods, ZCTAs vs. ZIP codes, and no causal meaning.</p>
     <p>Not applied (would need the author's approval): average ranks for ties, and renaming the index.</p>
+    <p><strong>Policy simulator (scenario analysis; website addition, not Homework 4).</strong> The simulator recomputes the HW4 index in the browser from the published integer counts
+      (<code>assets/js/sim.js</code>, same formula and order of operations as the R pipeline) and checks on every load that the current values match the published index.
+      A scenario adds Δ units per 1,000 renter households to a chosen group of ZIPs:</p>
+    <code class="formula">activity' = HPD units per 1,000 renter households + Δ   (selected ZIPs only)
+index'    = HW4 formula applied to (rent burden, activity')   — rent burden unchanged</code>
+    <p>This is <em>illustrative</em>: it shows how a relative ranking responds to a hypothetical change in recorded activity, holding burden fixed. It is not a forecast of rents or burden and assumes no causal effect.
+      Because the index is rank-based and rescaled, raising some ZIPs moves others up the ranking, and a uniform increase everywhere leaves every value unchanged.</p>
     <p><strong>Income association:</strong> Pearson correlation and ordinary least squares slope of rent burden rate on median household income, by borough. These figures describe the data and do not identify cause and effect.</p>
 
     <h3>Validation results</h3>

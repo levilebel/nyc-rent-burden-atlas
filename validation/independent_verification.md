@@ -1,6 +1,6 @@
 # Independent verification
 
-Generated 2026-10-12 23:06 by `pipeline/verify_outputs.R` (base R; shares no code with the build pipeline).
+Generated 2026-10-13 12:50 by `pipeline/verify_outputs.R` (base R; shares no code with the build pipeline).
 Data build checked: 2026-10-12 23:06 EDT. Raw inputs: original HW4 files (read-only).
 
 **Validation checks: 60 PASS, 0 FAIL** (RECOMPUTE 47/47; REFERENCE 4/4; CONSISTENCY 9/9). Informational lines: 3 (not counted).

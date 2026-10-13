@@ -64,6 +64,15 @@
       "sources": ["acs_b25070", "acs_b19013", "hpd_ahp", "tiger_zcta"],
       "notes": "Citywide extension: borough comparison, ZIP comparison, rent burden vs. HPD activity, income vs. rent burden, and two rank-based affordability pressure indices.",
       "integration": "Primary basis of this site. Every figure is recomputed from the raw files by pipeline/build_data.R using the same logic as rent_burden_nyc_analysis.Rmd."
+    },
+    {
+      "id": "ext",
+      "title": "Portfolio extension — policy simulator, policy context and About page",
+      "status": "website extension",
+      "scope": "Builds on the HW4 data; no new datasets",
+      "sources": ["acs_b25070", "hpd_ahp"],
+      "notes": "Added after feedback from the course professor: a what-if simulator that recomputes the HW4 pressure index under hypothetical increases in affordable housing activity, a structured policy-context section, and a standalone About page.",
+      "integration": "The simulator reuses the published HW4 counts and formula, checks on load that it reproduces the published index, and was cross-checked against an independent R implementation (validation/simulation_crosscheck.md). It is labelled as an illustrative simulation, not a causal forecast."
     }
   ]
 }

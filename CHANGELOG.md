@@ -2,6 +2,16 @@
 
 All changes to the published data and analyses are recorded here. Earlier analyses are kept, not overwritten.
 
+## 2026-10-13 — v0.4.0 professor feedback (branch `professor-feedback`, not yet published)
+
+**No data or statistical method changed.** `docs/data/` is untouched, and the HW4 baseline and all published values are identical.
+- **About page** (`docs/about.html`, `assets/js/about.js`): creator introduction, motivation, research question, datasets, coursework-to-portfolio history, analytical interests. Headline figures are read from the data.
+- **Policy simulator** (`assets/js/sim.js`, `sections/simulator.js`): hypothetical +10 / +25 / +50 / custom units per 1,000 renter households for a chosen ZIP group. It recomputes the HW4 index in the browser with the same formula, and shows current vs. scenario maps, a change map, pressure ranks and summary tables. It is labelled as an illustrative simulation, not a causal forecast. The baseline self-check on load matches the published index exactly, and the results match an independent R implementation (`pipeline/simulation_reference.R`, `validation/simulation_crosscheck.md`).
+- **Policy context** (`content/policy.json`, `sections/policy.js`): structured placeholders for federal, state, city and grant entries. Only entries with a source URL and verification date are displayed. No policy content has been added.
+- **Navigation:** Home · Rent Burden · Income · Affordable Housing · Affordability Pressure · Policy Simulator · About. The income scatter moved into a new **Income** section (with its own borough filter and a borough association table from `statistics.json`), and the rankings card moved into a new **Affordability Pressure** section. Their content is unchanged. Methodology, research log and GitHub links are in the footer. Theme and navigation code is now shared in `assets/js/site.js`, and scroll-spy supports multi-section nav items.
+- **README** rewritten: research question, datasets, methodology, descriptive vs. simulation, limitations, future development.
+- Shared `choropleth()` and `rewindFC()` components in `charts.js`; diverging change-map palette (blue = falls, orange = rises) in `util.js`.
+
 ## 2026-10-12 — published
 - Published to GitHub Pages: https://levilebel.github.io/nyc-rent-burden-atlas/ (repository `levilebel/nyc-rent-burden-atlas`, branch `main`, folder `/docs`). Before publishing: 60/60 verification checks passed and the staged files were scanned for credentials and personal data. Commits use the GitHub no-reply address.
 
