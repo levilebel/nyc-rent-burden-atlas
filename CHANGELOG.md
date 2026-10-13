@@ -2,7 +2,7 @@
 
 All changes to the published data and analyses are recorded here. Earlier analyses are kept, not overwritten.
 
-## 2026-10-13 — v0.4.0 professor feedback (branch `professor-feedback`, not yet published)
+## 2026-10-13 — v0.4.0 professor feedback (published)
 
 **No data or statistical method changed.** `docs/data/` is untouched, and the HW4 baseline and all published values are identical.
 - **About page** (`docs/about.html`, `assets/js/about.js`): creator introduction, motivation, research question, datasets, coursework-to-portfolio history, analytical interests. Headline figures are read from the data.
