@@ -1,0 +1,97 @@
+{
+  "income_vs_burden": [
+    {
+      "group": "Bronx",
+      "n": 25,
+      "r": -0.714693,
+      "slope_per_10k": -1.718022,
+      "intercept": 68.102609,
+      "slope": -0.000172
+    },
+    {
+      "group": "Brooklyn",
+      "n": 38,
+      "r": -0.859383,
+      "slope_per_10k": -1.895852,
+      "intercept": 67.3012,
+      "slope": -0.00019
+    },
+    {
+      "group": "Manhattan",
+      "n": 41,
+      "r": -0.744595,
+      "slope_per_10k": -0.92576,
+      "intercept": 58.899561,
+      "slope": -0.000093
+    },
+    {
+      "group": "New York City",
+      "n": 176,
+      "r": -0.66976,
+      "slope_per_10k": -1.377734,
+      "intercept": 65.574762,
+      "slope": -0.000138
+    },
+    {
+      "group": "Queens",
+      "n": 60,
+      "r": -0.497773,
+      "slope_per_10k": -1.767082,
+      "intercept": 70.4009,
+      "slope": -0.000177
+    },
+    {
+      "group": "Staten Island",
+      "n": 12,
+      "r": -0.475173,
+      "slope_per_10k": -1.641887,
+      "intercept": 73.941252,
+      "slope": -0.000164
+    }
+  ],
+  "hpd_vs_burden": [
+    {
+      "group": "Bronx",
+      "n": 25,
+      "r": -0.187383,
+      "spearman": 0.347692
+    },
+    {
+      "group": "Brooklyn",
+      "n": 38,
+      "r": 0.018633,
+      "spearman": -0.1266
+    },
+    {
+      "group": "Manhattan",
+      "n": 44,
+      "r": 0.482898,
+      "spearman": 0.551875
+    },
+    {
+      "group": "New York City",
+      "n": 179,
+      "r": 0.090236,
+      "spearman": 0.079905
+    },
+    {
+      "group": "Queens",
+      "n": 60,
+      "r": -0.010163,
+      "spearman": -0.045927
+    },
+    {
+      "group": "Staten Island",
+      "n": 12,
+      "r": 0.096796,
+      "spearman": 0.126764
+    }
+  ],
+  "nyc_medians": {
+    "rent_burden_rate": 53.675875,
+    "affordable_units_per_1000": 55.064689,
+    "median_household_income": 88016
+  },
+  "top10_activity": ["10475", "11239", "11434", "11692", "11693", "10004", "11691", "10451", "10474", "10459"],
+  "top10_pressure": ["11005", "11428", "11697", "10309", "10312", "11356", "11364", "10308", "11414", "11354"]
+}

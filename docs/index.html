@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <script>
+    // Resolve the theme before first paint (no flash): saved choice, else OS preference.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem("atlas-theme"); } catch (e) {}
+      var sys = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      var t = saved === "light" || saved === "dark" ? saved : sys;
+      document.documentElement.setAttribute("data-theme", t);
+      document.documentElement.setAttribute("data-theme-source", saved ? "user" : "system");
+    })();
+  </script>
+  <title>NYC Rent Burden Atlas</title>
+  <meta name="description" content="Interactive research dashboard on renter cost burden and affordable housing production across New York City's five boroughs, built from ACS 2024 5-year estimates and NYC HPD data.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b2545'/%3E%3Crect x='7' y='14' width='4' height='11' fill='%238db3e2'/%3E%3Crect x='14' y='9' width='4' height='16' fill='%23cde2fb'/%3E%3Crect x='21' y='17' width='4' height='8' fill='%235598e7'/%3E%3C/svg%3E">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#overview" aria-label="NYC Rent Burden Atlas — home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">NYC Rent Burden <em>Atlas</em></span>
+      </a>
+      <nav id="site-nav" class="site-nav" aria-label="Sections">
+        <a href="#overview">Overview</a>
+        <a href="#boroughs">Boroughs</a>
+        <a href="#zips">ZIP explorer</a>
+        <a href="#housing">Affordable housing</a>
+        <a href="#methods">Methodology</a>
+        <a href="#research">Research log</a>
+      </nav>
+      <button class="header-btn nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <button class="header-btn theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ======================= OVERVIEW ======================= -->
+    <section id="overview" class="hero">
+      <div class="wrap">
+        <p class="eyebrow">Housing affordability research · ACS 2020–2024 · NYC HPD</p>
+        <h1>How many New York renters are cost-burdened, and where?</h1>
+        <p class="lede">A ZIP-code-level look at renter households that spend 30% or more of their income on gross rent,
+          alongside the City's affordable housing production record.</p>
+
+        <div class="hero-figure" id="hero-figure" aria-live="polite"></div>
+        <div class="kpis" id="kpis"></div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Burden is a spectrum, not a line</h2>
+          <p>Share of renter households in each burden bracket. Brackets above 30% of income stack to the borough's rent-burden rate;
+            the darkest segment (50%+) is severe burden.</p>
+        </div>
+        <div class="card">
+          <div class="legend" id="bracket-legend"></div>
+          <div id="bracket-chart" class="chart"></div>
+          <p class="source">Source: U.S. Census Bureau, ACS 2024 5-Year Estimates, Table B25070, aggregated from ZCTAs. Denominator excludes households for which burden is "not computed".</p>
+        </div>
+
+        <div class="measures">
+          <article class="measure">
+            <h3>Rent burden rate</h3>
+            <p>Renter households paying <strong>≥30%</strong> of household income on gross rent ÷ renter households for which the ratio is computed.</p>
+          </article>
+          <article class="measure">
+            <h3>Severe rent burden</h3>
+            <p>The subset paying <strong>≥50%</strong> of income on gross rent, over the same denominator.</p>
+          </article>
+          <article class="measure">
+            <h3>Affordable housing production</h3>
+            <p>HPD "counted" affordable units in projects started since 2014. A measure of <em>policy activity</em>, not of need or of current affordability.</p>
+          </article>
+          <article class="measure">
+            <h3>Pressure indices (custom)</h3>
+            <p>Custom research indices built in Homework 4, not official statistics. They give a relative 0–100 ranking among NYC ZIPs, not absolute levels, and do not imply cause and effect.</p>
+          </article>
+        </div>
+
+        <div class="card reading-guide">
+          <h3 class="card-title">Reading these data</h3>
+          <ul>
+            <li><strong>Survey estimates vs. administrative counts.</strong> Rent burden, renter households and income are <em>ACS survey estimates</em> with sampling error (shown as 90% margins of error). HPD affordable units are <em>administrative counts</em>, which have no sampling error but can be revised.</li>
+            <li><strong>Different reference periods.</strong> ACS 2024 five-year estimates pool the survey years 2020–2024. HPD activity covers projects <em>started</em> from 2014 to mid-2026.</li>
+            <li><strong>What HPD counts.</strong> Counted units include both <em>new construction</em> and <em>preservation</em> of existing homes, and both <em>rental</em> and <em>homeownership</em> units.</li>
+            <li><strong>ZIP codes ≠ ZCTAs.</strong> Census ZIP Code Tabulation Areas approximate, but are not identical to, USPS ZIP codes; HPD records are matched on their postal ZIP.</li>
+            <li><strong>Association, not causation.</strong> Comparisons between production and burden are descriptive. They do not show that low production causes high burden, or that more production would reduce it.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= BOROUGHS ======================= -->
+    <section id="boroughs" class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Section B</p>
+          <h2>Borough comparison</h2>
+          <p>Borough rates pool counts across ZCTAs (sum of burdened ÷ sum of renter households) — they are not averages of ZIP rates.
+            Error bars show approximate 90% margins of error.</p>
+        </div>
+
+        <div class="controls" role="group" aria-label="Borough chart options">
+          <label>Measure
+            <select id="boro-metric">
+              <option value="rent_burden_rate">Rent burden rate (%)</option>
+              <option value="severe_rent_burden_rate">Severe rent burden rate (%)</option>
+              <option value="rent_burdened_households">Rent-burdened households (count)</option>
+              <option value="renter_households">Renter households (count)</option>
+              <option value="hpd_units_per_1000_renters">HPD affordable units per 1,000 renter households</option>
+            </select>
+          </label>
+          <label>Sort
+            <select id="boro-sort">
+              <option value="value">By value</option>
+              <option value="name">Alphabetical</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title" id="boro-chart-title"></h3>
+            <div id="boro-chart" class="chart"></div>
+            <p class="source" id="boro-chart-source"></p>
+          </div>
+          <div class="card">
+            <h3 class="card-title">ZIP-level spread within each borough</h3>
+            <p class="card-sub">Each dot is a ZCTA's rent burden rate. Hover for details; the line marks the borough rate.</p>
+            <div id="boro-strip" class="chart"></div>
+            <p class="source">Source: ACS 2024 5-Year, B25070. 6 ZCTAs with no computed renter households omitted. Hollow dots: Low reliability (CV &gt; 30%) — high statistical uncertainty.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Borough summary table</h3>
+          <div class="table-scroll"><table class="data-table" id="boro-table"></table></div>
+        </div>
+
+        <div class="card" id="excluded-card">
+          <h3 class="card-title">Excluded Manhattan ZCTAs — optional geographic inclusion comparison</h3>
+          <p class="card-sub">ZCTAs 10162 and 10279 are Manhattan areas that fall outside the Homework 4 ZIP ranges. They are <strong>not</strong> part of the study population, totals, maps or rankings above. This comparison only shows what including them would change.</p>
+          <div id="excluded-content"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= ZIPS ======================= -->
+    <section id="zips" class="section band">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Section C</p>
+          <h2>ZIP code explorer</h2>
+          <p>Map areas are Census ZIP Code Tabulation Areas (ZCTAs), which approximate but do not equal USPS ZIP codes.
+            Select a ZIP on the map, in the search box, or in the table to add it to the comparison.</p>
+        </div>
+
+        <div class="controls" role="group" aria-label="ZIP explorer options">
+          <label>Map measure
+            <select id="zip-metric"></select>
+          </label>
+          <label>Borough
+            <select id="zip-borough">
+              <option value="all">All boroughs</option>
+            </select>
+          </label>
+          <label class="search">Find ZIP
+            <input id="zip-search" type="search" inputmode="numeric" list="zip-list" placeholder="e.g. 10453" autocomplete="off">
+            <datalist id="zip-list"></datalist>
+          </label>
+        </div>
+
+        <div class="map-layout">
+          <div class="card map-card">
+            <div id="zip-map" class="map"></div>
+            <div id="map-legend" class="map-legend"></div>
+            <p class="source" id="map-source"></p>
+          </div>
+          <aside class="card detail" id="zip-detail" aria-live="polite"></aside>
+        </div>
+
+        <div class="card">
+          <div class="card-head-row">
+            <h3 class="card-title">Comparison</h3>
+            <button class="btn-link" id="compare-clear">Clear selection</button>
+          </div>
+          <p class="card-sub">Up to five ZIPs. Bars show rent burden (≥30%) with the severe (≥50%) share inside; hover a bar for its 90% margin of error.</p>
+          <div id="compare-chart" class="chart"></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title">Median household income vs. rent burden</h3>
+            <p class="card-sub" id="scatter-sub"></p>
+            <div id="income-scatter" class="chart"></div>
+            <p class="source">Source: ACS 2024 5-Year, Tables B19013 and B25070. Line: ordinary least squares fit for the selected group. Association only — not a causal estimate.</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title">All ZIP codes</h3>
+            <p class="card-sub">Click a column header to sort; click a row to compare.</p>
+            <div class="table-scroll tall"><table class="data-table" id="zip-table"></table></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= HOUSING ======================= -->
+    <section id="housing" class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Section D</p>
+          <h2>Affordable housing production</h2>
+          <p>HPD's production data records what the City financed or preserved — it is a <strong>flow of policy activity</strong>.
+            Rent burden is a <strong>condition of households</strong> at a point in time. The two are measured on different populations and timelines,
+            so a ZIP's production level says nothing by itself about whether burden there rose or fell.</p>
+        </div>
+
+        <div class="kpis small" id="hpd-kpis"></div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title">Counted units by borough and type</h3>
+            <div class="legend" id="hpd-type-legend"></div>
+            <div id="hpd-type-chart" class="chart"></div>
+            <p class="source">Source: NYC HPD, Affordable Housing Production by Building (export 2026-10-12). Totals include records without a postcode.</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Counted units by income band</h3>
+            <div class="legend" id="hpd-income-legend"></div>
+            <div id="hpd-income-chart" class="chart"></div>
+            <p class="source">Income bands as defined by HPD (share of Area Median Income). "Other" includes units reserved for building superintendents.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head-row">
+            <h3 class="card-title">Counted units by project start year</h3>
+            <label class="inline">Borough
+              <select id="hpd-year-borough"><option value="all">All boroughs</option></select>
+            </label>
+          </div>
+          <div class="legend" id="hpd-year-legend"></div>
+          <div id="hpd-year-chart" class="chart"></div>
+          <p class="source" id="hpd-year-source"></p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title">Production intensity vs. rent burden, by ZIP</h3>
+            <p class="card-sub" id="hpd-scatter-sub"></p>
+            <div class="controls compact">
+              <label>Borough
+                <select id="hpd-scatter-borough"><option value="all">All boroughs</option></select>
+              </label>
+            </div>
+            <div id="hpd-scatter" class="chart"></div>
+            <p class="source">Dashed lines: NYC medians across 179 ZCTAs (HW4). X-axis is square-root scaled. Sources: ACS B25070; NYC HPD.</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Rankings: HW4 baseline and exploratory alternative</h3>
+            <div class="tabs" role="tablist" aria-label="Ranking version">
+              <button role="tab" aria-selected="true" data-tab="pressure">HW4 baseline index</button>
+              <button role="tab" aria-selected="false" data-tab="alt">Alternative (exploratory)</button>
+              <button role="tab" aria-selected="false" data-tab="activity">Most HPD activity</button>
+            </div>
+            <div id="rank-chart" class="chart"></div>
+            <p class="source" id="rank-note"></p>
+            <div id="rank-changes"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= METHODS ======================= -->
+    <section id="methods" class="section band">
+      <div class="wrap narrow-ish">
+        <div class="section-head">
+          <p class="eyebrow">Section E</p>
+          <h2>Research &amp; methodology</h2>
+        </div>
+        <div id="methods-content"></div>
+      </div>
+    </section>
+
+    <!-- ======================= RESEARCH LOG ======================= -->
+    <section id="research" class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Section F</p>
+          <h2>Research log</h2>
+          <p>Each assignment is integrated only after its files are inspected and its numbers reproduced. New modules are appended here — earlier analyses are kept, not overwritten.</p>
+        </div>
+        <div id="research-content" class="timeline"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p><strong>NYC Rent Burden Atlas</strong> · Research by Levi Lebel.</p>
+      <p id="build-info"></p>
+      <p>Data: U.S. Census Bureau ACS 2024 5-Year Estimates (B25070, B19013); NYC HPD Affordable Housing Production by Building; Census 2020 ZCTA cartographic boundaries.</p>
+    </div>
+  </footer>
+
+  <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
+
+  <!-- D3 from jsDelivr, with unpkg as a fallback; boot.js shows a clear message if neither loads. -->
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script>window.d3 || document.write('<script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js"><\/script>');</script>
+  <script type="module" src="assets/js/boot.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# machine-specific
+pipeline/config.local.R
+.claude/
+.Rhistory
+.RData
+.Rproj.user/
+
+# never commit raw research inputs
+*.shp
+*.dbf
+*.shx
+*.prj
+*.xlsx
+**/data/raw/
+
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store

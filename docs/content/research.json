@@ -1,0 +1,69 @@
+{
+  "_comment": "Registry of research modules shown in 'Research log'. Add one entry per assignment once its files have been inspected and validated. Never add an entry for work that does not exist yet.",
+  "sources": [
+    {
+      "id": "acs_b25070",
+      "name": "Gross Rent as a Percentage of Household Income in the Past 12 Months",
+      "publisher": "U.S. Census Bureau, American Community Survey",
+      "table": "B25070",
+      "vintage": "2024 ACS 5-Year Estimates (survey years 2020–2024)",
+      "geography": "ZIP Code Tabulation Areas (ZCTA5)",
+      "universe": "Renter-occupied housing units",
+      "file": "ACSDT5Y2024.B25070-Data.csv",
+      "used_for": "Rent burden and severe rent burden rates; renter household counts"
+    },
+    {
+      "id": "acs_b19013",
+      "name": "Median Household Income in the Past 12 Months (in 2024 inflation-adjusted dollars)",
+      "publisher": "U.S. Census Bureau, American Community Survey",
+      "table": "B19013",
+      "vintage": "2024 ACS 5-Year Estimates (survey years 2020–2024)",
+      "geography": "ZIP Code Tabulation Areas (ZCTA5)",
+      "universe": "Households",
+      "file": "ACSDT5Y2024.B19013-Data.csv",
+      "used_for": "Median household income by ZIP; income-based pressure index"
+    },
+    {
+      "id": "hpd_ahp",
+      "name": "Affordable Housing Production by Building",
+      "publisher": "NYC Department of Housing Preservation and Development (HPD), NYC Open Data",
+      "table": null,
+      "vintage": "Export dated 2026-10-12; projects started 2014-01-03 to 2026-06-30",
+      "geography": "Building records with borough and postcode",
+      "universe": "Buildings in projects counted toward the City's affordable housing plans",
+      "file": "Affordable_Housing_Production_by_Building_20261012.csv",
+      "used_for": "Counted affordable units (new construction and preservation) by ZIP and borough"
+    },
+    {
+      "id": "tiger_zcta",
+      "name": "2020 Cartographic Boundary File, ZCTA5, 1:500,000",
+      "publisher": "U.S. Census Bureau (retrieved with the R package tigris)",
+      "table": "cb_2020_us_zcta520_500k",
+      "vintage": "2020",
+      "geography": "ZCTA polygons",
+      "universe": null,
+      "file": "cb_2020_us_zcta520_500k.shp (tigris cache)",
+      "used_for": "Map boundaries (simplified for the web)"
+    }
+  ],
+  "modules": [
+    {
+      "id": "hw3",
+      "title": "Assignment Three — Rent Burden (Brooklyn)",
+      "status": "completed",
+      "scope": "38 Brooklyn ZCTAs",
+      "sources": ["acs_b25070", "hpd_ahp"],
+      "notes": "Brooklyn-only analysis with a policy memo. Used an earlier HPD download (accessed 2026-09-26 per the assignment's source log).",
+      "integration": "Used as an independent cross-check: all 38 Brooklyn ZCTAs reproduce HW3's rent-burdened and valid-renter counts exactly. Its HPD figures are not shown because they come from an older download."
+    },
+    {
+      "id": "hw4",
+      "title": "Homework 4 — Rent Burden in New York City",
+      "status": "completed",
+      "scope": "185 ZCTAs across the five boroughs (179 with computable rates)",
+      "sources": ["acs_b25070", "acs_b19013", "hpd_ahp", "tiger_zcta"],
+      "notes": "Citywide extension: borough comparison, ZIP comparison, rent burden vs. HPD activity, income vs. rent burden, and two rank-based affordability pressure indices.",
+      "integration": "Primary basis of this site. Every figure is recomputed from the raw files by pipeline/build_data.R using the same logic as rent_burden_nyc_analysis.Rmd."
+    }
+  ]
+}

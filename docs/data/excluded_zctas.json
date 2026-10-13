@@ -1,0 +1,72 @@
+{
+  "status": "Excluded from the HW4 study population (outside the HW4 ZIP ranges). Shown for documentation only.",
+  "zctas": [
+    {
+      "zip": "10162",
+      "borough": "Manhattan",
+      "total_renter_households": 746,
+      "renter_households": 733,
+      "rent_burdened_households": 378,
+      "severely_rent_burdened_households": 363,
+      "rent_burden_rate": 51.57,
+      "rent_burden_rate_moe": 28.65,
+      "severe_rent_burden_rate": 49.52,
+      "rent_burden_rate_cv": 33.8,
+      "reliability": "low",
+      "note": "Valid observation but statistically unreliable (CV 33.8% > 30%)."
+    },
+    {
+      "zip": "10279",
+      "borough": "Manhattan",
+      "total_renter_households": 84,
+      "renter_households": 84,
+      "rent_burdened_households": 0,
+      "severely_rent_burdened_households": 0,
+      "rent_burden_rate": 0,
+      "rent_burden_rate_moe": 33.33,
+      "severe_rent_burden_rate": 0,
+      "rent_burden_rate_cv": null,
+      "reliability": "unusable",
+      "note": "Zero-count survey estimate: 0 of an estimated  84 renter households. The 90% MOE (±33.3 pts) exceeds the estimate and the CV is not defined, so this is NOT a confidently measured 0% rent burden."
+    }
+  ],
+  "comparison": [
+    {
+      "area": "Manhattan",
+      "version": "HW4 study population",
+      "zip_count_valid": 44,
+      "renter_households": 553722,
+      "rent_burdened_households": 265341,
+      "rent_burden_rate": 47.92,
+      "severe_rent_burden_rate": 25.282
+    },
+    {
+      "area": "Manhattan",
+      "version": "with 10162 + 10279",
+      "zip_count_valid": 46,
+      "renter_households": 554539,
+      "rent_burdened_households": 265719,
+      "rent_burden_rate": 47.917,
+      "severe_rent_burden_rate": 25.31
+    },
+    {
+      "area": "New York City",
+      "version": "HW4 study population",
+      "zip_count_valid": 179,
+      "renter_households": 2128919,
+      "rent_burdened_households": 1115977,
+      "rent_burden_rate": 52.42,
+      "severe_rent_burden_rate": 28.936
+    },
+    {
+      "area": "New York City",
+      "version": "with 10162 + 10279",
+      "zip_count_valid": 181,
+      "renter_households": 2129736,
+      "rent_burdened_households": 1116355,
+      "rent_burden_rate": 52.418,
+      "severe_rent_burden_rate": 28.942
+    }
+  ],
+  "borough_order_unchanged": true
+}

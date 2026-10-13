@@ -1,0 +1,171 @@
+{
+  "criteria": {
+    "max_cv": 30,
+    "min_renter_households": 1000,
+    "activity": "HPD counted rental units per 1,000 renter households"
+  },
+  "n_baseline": 179,
+  "n_alt": 173,
+  "excluded": [
+    {
+      "zip": "10464",
+      "borough": "Bronx",
+      "reason": "CV > 30% and < 1,000 renter households",
+      "renter_households": 426,
+      "cv": 32.5
+    },
+    {
+      "zip": "11005",
+      "borough": "Queens",
+      "reason": "< 1,000 renter households",
+      "renter_households": 84,
+      "cv": 29.3
+    },
+    {
+      "zip": "11363",
+      "borough": "Queens",
+      "reason": "< 1,000 renter households",
+      "renter_households": 731,
+      "cv": 18.8
+    },
+    {
+      "zip": "11411",
+      "borough": "Queens",
+      "reason": "< 1,000 renter households",
+      "renter_households": 950,
+      "cv": 7.6
+    },
+    {
+      "zip": "11697",
+      "borough": "Queens",
+      "reason": "CV > 30% and < 1,000 renter households",
+      "renter_households": 15,
+      "cv": 148.6
+    },
+    {
+      "zip": "10307",
+      "borough": "Staten Island",
+      "reason": "< 1,000 renter households",
+      "renter_households": 666,
+      "cv": 15
+    }
+  ],
+  "zero_rental_units": 24,
+  "baseline_top10": [
+    {
+      "zip": "11005",
+      "baseline_rank": 1,
+      "alt_rank": null,
+      "alt_exclusion": "< 1,000 renter households"
+    },
+    {
+      "zip": "11428",
+      "baseline_rank": 2,
+      "alt_rank": 1,
+      "alt_exclusion": null
+    },
+    {
+      "zip": "11697",
+      "baseline_rank": 3,
+      "alt_rank": null,
+      "alt_exclusion": "CV > 30% and < 1,000 renter households"
+    },
+    {
+      "zip": "10309",
+      "baseline_rank": 4,
+      "alt_rank": 2,
+      "alt_exclusion": null
+    },
+    {
+      "zip": "10312",
+      "baseline_rank": 5,
+      "alt_rank": 3,
+      "alt_exclusion": null
+    },
+    {
+      "zip": "11356",
+      "baseline_rank": 6,
+      "alt_rank": 4,
+      "alt_exclusion": null
+    },
+    {
+      "zip": "11364",
+      "baseline_rank": 7,
+      "alt_rank": 5,
+      "alt_exclusion": null
+    },
+    {
+      "zip": "10308",
+      "baseline_rank": 8,
+      "alt_rank": 6,
+      "alt_exclusion": null
+    },
+    {
+      "zip": "11414",
+      "baseline_rank": 9,
+      "alt_rank": 8,
+      "alt_exclusion": null
+    },
+    {
+      "zip": "11354",
+      "baseline_rank": 10,
+      "alt_rank": 9,
+      "alt_exclusion": null
+    }
+  ],
+  "alt_top10": [
+    {
+      "zip": "11428",
+      "alt_rank": 1,
+      "baseline_rank": 2
+    },
+    {
+      "zip": "10309",
+      "alt_rank": 2,
+      "baseline_rank": 4
+    },
+    {
+      "zip": "10312",
+      "alt_rank": 3,
+      "baseline_rank": 5
+    },
+    {
+      "zip": "11356",
+      "alt_rank": 4,
+      "baseline_rank": 6
+    },
+    {
+      "zip": "11364",
+      "alt_rank": 5,
+      "baseline_rank": 7
+    },
+    {
+      "zip": "10308",
+      "alt_rank": 6,
+      "baseline_rank": 8
+    },
+    {
+      "zip": "11429",
+      "alt_rank": 7,
+      "baseline_rank": 24
+    },
+    {
+      "zip": "11414",
+      "alt_rank": 8,
+      "baseline_rank": 9
+    },
+    {
+      "zip": "11354",
+      "alt_rank": 9,
+      "baseline_rank": 10
+    },
+    {
+      "zip": "11416",
+      "alt_rank": 10,
+      "baseline_rank": 11
+    }
+  ],
+  "overlap": 8,
+  "top10_alt": ["11428", "10309", "10312", "11356", "11364", "10308", "11429", "11414", "11354", "11416"],
+  "top10_baseline": ["11005", "11428", "11697", "10309", "10312", "11356", "11364", "10308", "11414", "11354"]
+}
